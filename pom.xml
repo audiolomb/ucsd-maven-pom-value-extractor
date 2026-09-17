@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.davidehringer.atlassian.bamboo.maven</groupId>
     <artifactId>maven-pom-parser-plugin</artifactId>
-    <version>2026.1.0</version>
+    <version>2026.1.1</version>
     <organization>
         <name>Claudio, Claude and Summer Lombardo</name>
         <url>http://davidehringer.com</url>

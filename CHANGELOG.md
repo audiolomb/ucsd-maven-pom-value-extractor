@@ -3,6 +3,20 @@
 All notable changes to this fork are documented here. Versioning follows
 `{year}.{minor}.{patch}` (see [README.md](README.md#versioning)).
 
+## 2026.1.1
+
+### Fixed
+
+- Fixed an "Internal server error" (`NoClassDefFoundError: com/google/common/collect/ImmutableList`)
+  when opening an existing "Maven POM Value Extractor" task for editing. Bamboo 12.1's
+  OSGi plugin framework no longer exposes Guava (`com.google.common.*`) to plugins by
+  default the way older Bamboo versions did, and this plugin never declared Guava as
+  its own dependency — it only worked previously because it "leaked through" from the
+  platform. `MavenVariableTaskConfigurator` used `ImmutableList.of(...)` and
+  `Maps.newHashMap()` in a static field initializer, so the class failed to even load.
+  Replaced both with plain JDK collections (`Collections.unmodifiableList(Arrays.asList(...))`
+  and `new HashMap<>()`) — no functional change, no more dependency on Guava at all.
+
 ## 2026.1.0
 
 Initial UCSD compatibility fork, forked from
