@@ -46,7 +46,6 @@ import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.opensymphony.xwork.TextProvider;
 
 /**
  * @author David Ehringer
@@ -58,10 +57,7 @@ public class MavenVariableTaskConfigurator extends AbstractTaskConfigurator {
     private static final List<String> FIELDS_TO_COPY = ImmutableList.of(PROJECT_FILE, EXTRACT_MODE, VARIABLE_TYPE,
             PREFIX_OPTION, PREFIX_OPTION_CUSTOM_VALUE, CUSTOM_VARIABLE_NAME, CUSTOM_ELEMENT, STRIP_SNAPSHOT);
 
-    private TextProvider textProvider;
-    
-    public MavenVariableTaskConfigurator(TextProvider textProvider, TaskConfiguratorHelper taskConfiguratorHelper) {
-        this.textProvider = textProvider;
+    public MavenVariableTaskConfigurator(TaskConfiguratorHelper taskConfiguratorHelper) {
         this.taskConfiguratorHelper = taskConfiguratorHelper;
     }
 
@@ -94,22 +90,22 @@ public class MavenVariableTaskConfigurator extends AbstractTaskConfigurator {
 
     private void populateContextForAll(@NotNull final Map<String, Object> context) {
         Map<String, String> servers = Maps.newHashMap();
-        servers.put(EXTRACT_MODE_CUSTOM, textProvider.getText("maven.extractor.config.option.extract.custom"));
-        servers.put(EXTRACT_MODE_GAV, textProvider.getText("maven.extractor.config.option.extract.gav"));
+        servers.put(EXTRACT_MODE_CUSTOM, getI18nBean().getText("maven.extractor.config.option.extract.custom"));
+        servers.put(EXTRACT_MODE_GAV, getI18nBean().getText("maven.extractor.config.option.extract.gav"));
         context.put("options", servers);
 
         Map<String, String> prefixOptions = Maps.newHashMap();
-        prefixOptions.put(PREFIX_OPTION_DEFAULT, textProvider.getText("maven.extractor.config.option.prefix.maven"));
-        prefixOptions.put(PREFIX_OPTION_CUSTOM, textProvider.getText("maven.extractor.config.option.prefix.custom"));
+        prefixOptions.put(PREFIX_OPTION_DEFAULT, getI18nBean().getText("maven.extractor.config.option.prefix.maven"));
+        prefixOptions.put(PREFIX_OPTION_CUSTOM, getI18nBean().getText("maven.extractor.config.option.prefix.custom"));
         context.put("prefixOptions", prefixOptions);
 
         Map<String, String> variableTypeOptions = Maps.newHashMap();
         variableTypeOptions.put(VARIABLE_TYPE_JOB,
-                textProvider.getText("maven.extractor.config.option.variableType.job"));
+                getI18nBean().getText("maven.extractor.config.option.variableType.job"));
         variableTypeOptions.put(VARIABLE_TYPE_RESULT,
-                textProvider.getText("maven.extractor.config.option.variableType.result"));
+                getI18nBean().getText("maven.extractor.config.option.variableType.result"));
         variableTypeOptions.put(VARIABLE_TYPE_PLAN,
-                textProvider.getText("maven.extractor.config.option.variableType.plan"));
+                getI18nBean().getText("maven.extractor.config.option.variableType.plan"));
         context.put("variableTypeOptions", variableTypeOptions);
     }
 
@@ -130,11 +126,11 @@ public class MavenVariableTaskConfigurator extends AbstractTaskConfigurator {
             String element = params.getString(CUSTOM_ELEMENT);
             if (StringUtils.isEmpty(variableName)) {
                 errorCollection.addError(CUSTOM_VARIABLE_NAME,
-                        textProvider.getText("maven.extractor.config.custom.variable.name.error"));
+                        getI18nBean().getText("maven.extractor.config.custom.variable.name.error"));
             }
             if (StringUtils.isEmpty(element)) {
                 errorCollection.addError(CUSTOM_ELEMENT,
-                        textProvider.getText("maven.extractor.config.custom.element.error"));
+                        getI18nBean().getText("maven.extractor.config.custom.element.error"));
             }
         }
         if (LOG.isDebugEnabled()) {

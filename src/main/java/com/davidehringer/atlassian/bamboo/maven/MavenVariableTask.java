@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import com.atlassian.bamboo.agent.AgentType;
 import com.atlassian.bamboo.agent.bootstrap.AgentContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,9 +37,9 @@ import com.atlassian.bamboo.task.TaskResultBuilder;
 import com.atlassian.bamboo.v2.build.BuildContext;
 import com.atlassian.bamboo.v2.build.agent.remote.RemoteAgent;
 import com.atlassian.bamboo.v2.build.agent.remote.sender.BambooAgentMessageSender;
+import com.atlassian.bamboo.spring.ComponentAccessor;
 import com.atlassian.bamboo.variable.VariableContext;
 import com.atlassian.bamboo.variable.VariableDefinitionManager;
-import com.atlassian.spring.container.ContainerManager;
 import com.davidehringer.bamboo.maven.extractor.InvalidPomException;
 import com.davidehringer.bamboo.maven.extractor.PomValueExtractor;
 import com.davidehringer.bamboo.maven.extractor.PomValueExtractorMavenModel;
@@ -158,8 +157,8 @@ public class MavenVariableTask implements CommonTaskType {
 		    // we want. Send something back home so they can do what we want
 		    // instead.
 		    if (bambooAgentMessageSender == null) {
-		        bambooAgentMessageSender = (BambooAgentMessageSender) ContainerManager
-		                .getComponent("bambooAgentMessageSender");
+		        bambooAgentMessageSender = ComponentAccessor
+		                .<BambooAgentMessageSender>newLazyComponentReference("bambooAgentMessageSender").get();
 		    }
 		    bambooAgentMessageSender.send(new CreateOrUpdateVariableMessage(topLevelPlanKey, buildResultKey,
 		            variables));
